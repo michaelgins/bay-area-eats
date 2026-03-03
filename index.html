@@ -3,639 +3,357 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bay Area Eats — Top Picks</title>
+  <title>Bay Area Eats — Candyland Edition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Fredoka+One&family=Bubblegum+Sans&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg: #faf9f7;
-      --surface: #ffffff;
-      --border: #e8e4df;
-      --text: #1a1a1a;
-      --muted: #7a7570;
-      --accent: #c8401a;
-      --tag-bg: #f2ede8;
-    }
-
     body {
-      font-family: 'Georgia', serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'Bubblegum Sans', cursive;
+      background-color: #FFF0F5;
+      background-image:
+        radial-gradient(circle at 15% 15%, #FFD1DC 0%, transparent 35%),
+        radial-gradient(circle at 85% 10%, #B5EAD7 0%, transparent 35%),
+        radial-gradient(circle at 50% 45%, #FFDAC1 0%, transparent 40%),
+        radial-gradient(circle at 10% 75%, #C7CEEA 0%, transparent 35%),
+        radial-gradient(circle at 90% 80%, #FFB7D5 0%, transparent 35%);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* HEADER */
-    header {
-      background: var(--text);
-      color: #fff;
-      padding: 48px 24px 40px;
+    /* ── HEADER ── */
+    .header {
       text-align: center;
+      padding: 44px 20px 28px;
     }
-    header .eyebrow {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #aaa;
-      margin-bottom: 16px;
+    .header h1 {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: clamp(2.8rem, 9vw, 5.5rem);
+      letter-spacing: 4px;
+      line-height: 1;
+      color: #FF4081;
+      text-shadow:
+        4px 4px 0 #FF80AB,
+        -2px -2px 0 #AD1457,
+        7px 7px 0 rgba(0,0,0,0.12);
+      margin-bottom: 10px;
     }
-    header h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: normal;
-      letter-spacing: -0.5px;
-      line-height: 1.1;
-      margin-bottom: 12px;
+    .header .subtitle {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.25rem;
+      color: #7B1FA2;
+      margin-bottom: 18px;
     }
-    header p {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 14px;
-      color: #aaa;
-      max-width: 480px;
-      margin: 0 auto 24px;
-      line-height: 1.6;
-    }
-    .source-badges {
+    .source-links {
       display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .source-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #fff;
-      border: 1px solid #444;
-      padding: 6px 14px;
-      border-radius: 100px;
-      text-decoration: none;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .source-badge:hover { border-color: var(--accent); color: var(--accent); }
-    .source-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
-    .dot-eater { background: #e8321a; }
-    .dot-infatuation { background: #f5c518; }
-
-    /* FILTERS */
-    .filters-wrap {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 24px;
-    }
-    .filters {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
       gap: 12px;
-      align-items: center;
-    }
-    .filter-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .filter-label {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .pill {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 5px 13px;
-      border-radius: 100px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.15s;
-      white-space: nowrap;
-    }
-    .pill:hover { border-color: var(--text); }
-    .pill.active { background: var(--text); color: #fff; border-color: var(--text); }
-    .filter-divider {
-      width: 1px;
-      height: 28px;
-      background: var(--border);
-    }
-
-    /* GRID */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 36px 24px 60px;
-    }
-    .results-count {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 24px;
-      letter-spacing: 0.5px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    /* CARD */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      transition: box-shadow 0.2s, transform 0.2s;
-      display: flex;
-      flex-direction: column;
-    }
-    .card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.09); transform: translateY(-2px); }
-    .card-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background: var(--tag-bg);
-      display: flex;
-      align-items: center;
       justify-content: center;
-      font-size: 48px;
-    }
-    .card-body {
-      padding: 20px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .card-name {
-      font-size: 1.15rem;
-      font-weight: normal;
-      line-height: 1.3;
-    }
-    .card-price {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--accent);
-      white-space: nowrap;
-      padding-top: 2px;
-    }
-    .card-meta {
-      display: flex;
-      gap: 8px;
       flex-wrap: wrap;
     }
-    .tag {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      background: var(--tag-bg);
-      color: var(--muted);
-      padding: 3px 9px;
-      border-radius: 3px;
+    .source-link {
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.95rem;
+      padding: 7px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: 3px solid rgba(0,0,0,0.12);
+      box-shadow: 0 3px 0 rgba(0,0,0,0.12);
+      transition: transform 0.1s, box-shadow 0.1s;
     }
-    .card-desc {
-      font-size: 0.875rem;
-      line-height: 1.65;
-      color: #444;
+    .source-link:hover { transform: translateY(-2px); box-shadow: 0 5px 0 rgba(0,0,0,0.12); }
+    .source-link:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,0.12); }
+    .source-link.eater { background: #FF5252; color: #fff; }
+    .source-link.infatuation { background: #FFD740; color: #333; }
+
+    /* ── BOARD ── */
+    .board {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 10px 20px 20px;
+    }
+
+    /* ── START / FINISH ── */
+    .badge {
+      text-align: center;
+      margin: 16px 0;
+    }
+    .badge span {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+      display: inline-block;
+      padding: 10px 32px;
+      border-radius: 50px;
+      border: 4px solid rgba(0,0,0,0.15);
+      box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+    }
+    .badge.start span { background: #4CAF50; color: #fff; }
+    .badge.finish span {
+      background: linear-gradient(135deg, #FF6B9D 0%, #FFD93D 35%, #6BCB77 65%, #4D96FF 100%);
+      color: #fff;
+    }
+
+    /* ── PATH LAYOUT ── */
+    .path { display: flex; flex-direction: column; }
+
+    .row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .row.reverse { flex-direction: row-reverse; }
+
+    /* turn connector */
+    .connector {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 48px;
+    }
+    .connector.turn-right { justify-content: flex-end; }
+    .connector.turn-left  { justify-content: flex-start; }
+    .connector-inner {
+      width: 64px;
+      height: 44px;
+      border: 6px dashed;
+      border-radius: 0 0 32px 32px;
+      border-top: none;
+    }
+    .connector.turn-right .connector-inner {
+      border-color: var(--c);
+      border-right-color: var(--c);
+      border-radius: 0 0 32px 0;
+    }
+    .connector.turn-left .connector-inner {
+      border-color: var(--c);
+      border-left-color: var(--c);
+      border-radius: 0 0 0 32px;
+    }
+
+    /* ── STOP CARD ── */
+    .stop {
       flex: 1;
+      min-width: 180px;
+      max-width: 290px;
+      border-radius: 22px;
+      border: 4px solid rgba(0,0,0,0.14);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.14);
+      padding: 16px 14px 14px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
+      overflow: hidden;
     }
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-      margin-top: 4px;
+    .stop::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(255,255,255,0.35) 0%, transparent 60%);
+      pointer-events: none;
+      border-radius: 18px;
     }
-    .card-neighborhood {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 11px;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+    .stop:hover { transform: translateY(-5px); box-shadow: 0 11px 0 rgba(0,0,0,0.14); }
+    .stop:active { transform: translateY(1px); box-shadow: 0 2px 0 rgba(0,0,0,0.14); }
+
+    .stop-num {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: rgba(0,0,0,0.3);
+      margin-bottom: 5px;
     }
-    .card-neighborhood::before { content: '📍'; font-size: 10px; }
-    .card-sources {
+    .stop a {
+      text-decoration: none;
+      color: inherit;
       display: flex;
+      flex-direction: column;
       gap: 5px;
     }
-    .source-tag {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      padding: 2px 7px;
-      border-radius: 3px;
-      text-decoration: none;
+    .stop-emoji { font-size: 2rem; line-height: 1; }
+    .stop-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.1rem;
+      color: rgba(0,0,0,0.72);
+      line-height: 1.2;
     }
-    .source-tag.eater { background: #ffeee9; color: #c8401a; }
-    .source-tag.infatuation { background: #fffbe6; color: #b89800; }
-
-    /* EMPTY STATE */
-    .empty {
-      text-align: center;
-      padding: 80px 20px;
-      color: var(--muted);
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      grid-column: 1 / -1;
+    .stop-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
     }
-    .empty h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--text); }
-    .empty p { font-size: 0.875rem; }
+    .stop-tag {
+      font-size: 0.68rem;
+      font-weight: bold;
+      letter-spacing: 0.3px;
+      background: rgba(255,255,255,0.5);
+      color: rgba(0,0,0,0.55);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .stop-hood {
+      font-size: 0.72rem;
+      color: rgba(0,0,0,0.45);
+    }
+    .stop-cta {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: bold;
+      background: rgba(255,255,255,0.5);
+      color: rgba(0,0,0,0.55);
+      padding: 3px 10px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
 
-    /* FOOTER */
+    /* ── FLOATING DECOR ── */
+    .decor {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.55;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(-5deg); }
+      50%       { transform: translateY(-12px) rotate(5deg); }
+    }
+
+    /* ── FOOTER ── */
     footer {
       text-align: center;
-      padding: 32px 24px;
-      border-top: 1px solid var(--border);
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.7;
+      padding: 28px 20px 36px;
+      font-size: 0.8rem;
+      color: rgba(0,0,0,0.38);
     }
-    footer a { color: var(--muted); }
-    footer a:hover { color: var(--accent); }
+    footer a { color: inherit; }
 
-    @media (max-width: 600px) {
-      .filter-divider { display: none; }
-      .filters { gap: 10px; }
+    @media (max-width: 640px) {
+      .stop { min-width: 140px; }
+      .stop-name { font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="eyebrow">San Francisco Bay Area</div>
-  <h1>Where to Eat Right Now</h1>
-  <p>Top restaurant picks curated from the Bay Area's most trusted food guides.</p>
-  <div class="source-badges">
-    <a href="https://sf.eater.com" target="_blank" rel="noopener" class="source-badge">
-      <span class="dot dot-eater"></span> Eater SF
-    </a>
-    <a href="https://www.theinfatuation.com/san-francisco" target="_blank" rel="noopener" class="source-badge">
-      <span class="dot dot-infatuation"></span> The Infatuation
-    </a>
-  </div>
-</header>
+<!-- Floating candy decorations -->
+<div class="decor" style="top:4%;left:2%;animation-delay:0s">🍭</div>
+<div class="decor" style="top:12%;right:3%;animation-delay:1s">🍬</div>
+<div class="decor" style="top:28%;left:1%;animation-delay:2s">🧁</div>
+<div class="decor" style="top:44%;right:1.5%;animation-delay:0.5s">🍰</div>
+<div class="decor" style="top:60%;left:1.5%;animation-delay:3s">🍡</div>
+<div class="decor" style="top:74%;right:2%;animation-delay:1.5s">🍩</div>
+<div class="decor" style="top:87%;left:3%;animation-delay:2.5s">🍫</div>
+<div class="decor" style="top:93%;right:3%;animation-delay:4s">🍪</div>
+<div class="decor" style="top:20%;left:0.5%;animation-delay:3.5s">🌈</div>
+<div class="decor" style="top:50%;right:0.5%;animation-delay:2s">🎠</div>
 
-<div class="filters-wrap">
-  <div class="filters">
-    <div class="filter-group">
-      <span class="filter-label">Price</span>
-      <div class="pills" id="price-pills">
-        <button class="pill active" data-price="all">All</button>
-        <button class="pill" data-price="$">$</button>
-        <button class="pill" data-price="$$">$$</button>
-        <button class="pill" data-price="$$$">$$$</button>
-        <button class="pill" data-price="$$$$">$$$$</button>
-      </div>
-    </div>
-    <div class="filter-divider"></div>
-    <div class="filter-group">
-      <span class="filter-label">Cuisine</span>
-      <div class="pills" id="cuisine-pills">
-        <button class="pill active" data-cuisine="all">All</button>
-        <button class="pill" data-cuisine="California">California</button>
-        <button class="pill" data-cuisine="Italian">Italian</button>
-        <button class="pill" data-cuisine="Japanese">Japanese</button>
-        <button class="pill" data-cuisine="Chinese">Chinese</button>
-        <button class="pill" data-cuisine="Mexican">Mexican</button>
-        <button class="pill" data-cuisine="Seafood">Seafood</button>
-        <button class="pill" data-cuisine="American">American</button>
-        <button class="pill" data-cuisine="Other">Other</button>
-      </div>
-    </div>
+<div class="header">
+  <h1>Bay Area Eats</h1>
+  <p class="subtitle">🍭 The Candyland Edition 🍭</p>
+  <div class="source-links">
+    <a href="https://sf.eater.com" target="_blank" rel="noopener" class="source-link eater">Eater SF</a>
+    <a href="https://www.theinfatuation.com/san-francisco" target="_blank" rel="noopener" class="source-link infatuation">The Infatuation</a>
   </div>
 </div>
 
-<main>
-  <div class="results-count" id="count"></div>
-  <div class="grid" id="grid"></div>
-</main>
+<div class="board">
+  <div class="badge start"><span>🎲 START YOUR FEAST</span></div>
+  <div class="path" id="path"></div>
+  <div class="badge finish"><span>🏆 BON APPÉTIT!</span></div>
+</div>
 
 <footer>
-  Data sourced from <a href="https://sf.eater.com" target="_blank" rel="noopener">Eater SF</a>
-  and <a href="https://www.theinfatuation.com/san-francisco" target="_blank" rel="noopener">The Infatuation SF</a>.
-  For the most current recommendations, visit those sites directly.
+  Curated from <a href="https://sf.eater.com" target="_blank" rel="noopener">Eater SF</a>
+  &amp; <a href="https://www.theinfatuation.com/san-francisco" target="_blank" rel="noopener">The Infatuation SF</a>.
+  Verify links before visiting — restaurant websites may change.
 </footer>
 
 <script>
 const restaurants = [
-  {
-    name: "Zuni Café",
-    cuisine: "California",
-    price: "$$",
-    neighborhood: "Hayes Valley",
-    emoji: "🔥",
-    desc: "A SF institution famous for its roast chicken for two and house-cured anchovies. The wood-burning oven and copper bar have anchored this corner since 1979.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "State Bird Provisions",
-    cuisine: "California",
-    price: "$$",
-    neighborhood: "Lower Pacific Heights",
-    emoji: "🐦",
-    desc: "Inventive dim sum–style small plates served from carts in a lively dining room. One of SF's most creative and celebrated spots — book well in advance.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Nopa",
-    cuisine: "American",
-    price: "$$",
-    neighborhood: "NoPa",
-    emoji: "🍕",
-    desc: "Late-night communal dining with wood-fired pizzas, rotisserie meats, and organic cocktails. The bar scene is equally compelling — open until 1am.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Rich Table",
-    cuisine: "California",
-    price: "$$$",
-    neighborhood: "Hayes Valley",
-    emoji: "🌿",
-    desc: "Husband-and-wife team Sarah and Evan Rich deliver playful, technically brilliant California cuisine. The sardine chips and porcini doughnuts are legendary.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Rintaro",
-    cuisine: "Japanese",
-    price: "$$$",
-    neighborhood: "Mission",
-    emoji: "🏮",
-    desc: "A wood-and-reed izakaya transporting you to rural Japan. Hand-cut noodles, yakitori, and seasonal small plates in one of SF's most atmospheric rooms.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Flour + Water",
-    cuisine: "Italian",
-    price: "$$$",
-    neighborhood: "Mission",
-    emoji: "🍝",
-    desc: "House-made pastas and Neapolitan pizzas using Bay Area ingredients. The seasonal pasta tasting menu is one of the best deals in the city.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "La Ciccia",
-    cuisine: "Italian",
-    price: "$$$",
-    neighborhood: "Noe Valley",
-    emoji: "🐟",
-    desc: "Sardinian cooking by Massimiliano Conti and Lorella Degan. Exceptional bottarga, hand-rolled pastas, and a carefully curated Italian wine list.",
-    sources: ["eater"]
-  },
-  {
-    name: "Liholiho Yacht Club",
-    cuisine: "Other",
-    price: "$$$",
-    neighborhood: "Tendernob",
-    emoji: "🌺",
-    desc: "Hawaiian-inspired dishes with global influences — think smoked meat bao, Japanese fried chicken, and oxtail fried rice. Always festive, always packed.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Burma Superstar",
-    cuisine: "Other",
-    price: "$",
-    neighborhood: "Inner Richmond",
-    emoji: "🍜",
-    desc: "The definitive Burmese restaurant in the Bay Area. The tea leaf salad and rainbow salad alone are worth the iconic wait. Cash-friendly and casual.",
-    sources: ["infatuation"]
-  },
-  {
-    name: "Tartine Manufactory",
-    cuisine: "California",
-    price: "$",
-    neighborhood: "Mission",
-    emoji: "🥐",
-    desc: "The spiritual successor to the legendary bakery. All-day café with exceptional bread, pastries, grain bowls, and coffee in a sprawling industrial space.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Saison",
-    cuisine: "California",
-    price: "$$$$",
-    neighborhood: "SoMa",
-    emoji: "🔥",
-    desc: "Three Michelin stars. An intimate, hearth-driven tasting menu built around live-fire cooking. One of the most singular dining experiences on the West Coast.",
-    sources: ["eater"]
-  },
-  {
-    name: "Quince",
-    cuisine: "Italian",
-    price: "$$$$",
-    neighborhood: "Jackson Square",
-    emoji: "🌸",
-    desc: "Three Michelin stars. Michael Tusk's Italian-Californian tasting menu is precise, seasonal, and deeply considered. An essential SF splurge.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Gary Danko",
-    cuisine: "American",
-    price: "$$$$",
-    neighborhood: "Fisherman's Wharf",
-    emoji: "⭐",
-    desc: "A Michelin-starred SF stalwart known for its three-to-five course prix fixe with flawless service. The cheese cart and glazed oysters remain iconic.",
-    sources: ["infatuation"]
-  },
-  {
-    name: "Tony's Pizza Napoletana",
-    cuisine: "Italian",
-    price: "$$",
-    neighborhood: "North Beach",
-    emoji: "🍕",
-    desc: "World pizza champion Tony Gemignani runs this North Beach empire. Multiple oven types, each calibrated for a different regional pizza style.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Al's Place",
-    cuisine: "California",
-    price: "$$$",
-    neighborhood: "Mission",
-    emoji: "🥕",
-    desc: "Aaron London's vegetable-forward cooking puts produce in the spotlight, with meat and fish offered as sides. Michelin-starred, inventive, and genuinely warm.",
-    sources: ["eater"]
-  },
-  {
-    name: "Birdsong",
-    cuisine: "California",
-    price: "$$$$",
-    neighborhood: "SoMa",
-    emoji: "🌾",
-    desc: "Chris Bleidorn's intimate tasting menu channels the American wilderness — foraged ingredients, wood fire, and extraordinary technique. Two Michelin stars.",
-    sources: ["eater"]
-  },
-  {
-    name: "Nomica",
-    cuisine: "Japanese",
-    price: "$$",
-    neighborhood: "Tenderloin",
-    emoji: "🍱",
-    desc: "A lively Japanese restaurant with an izakaya spirit and a focus on Japanese whisky highballs. Great for yakitori, sashimi, and late-night bites.",
-    sources: ["infatuation"]
-  },
-  {
-    name: "El Farolito",
-    cuisine: "Mexican",
-    price: "$",
-    neighborhood: "Mission",
-    emoji: "🌯",
-    desc: "The undisputed Mission burrito champion — massive, perfectly constructed super burritos until 3am. A San Francisco rite of passage.",
-    sources: ["infatuation"]
-  },
-  {
-    name: "La Taqueria",
-    cuisine: "Mexican",
-    price: "$",
-    neighborhood: "Mission",
-    emoji: "🌮",
-    desc: "James Beard Award winner and consistent best burrito contender. Unlike competitors, they don't add rice — just beans, meat, and perfectly balanced flavors.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Hog Island Oyster Co.",
-    cuisine: "Seafood",
-    price: "$$",
-    neighborhood: "Ferry Building",
-    emoji: "🦪",
-    desc: "Marin County–raised oysters served at the Ferry Building with panoramic bay views. Pair with a glass of Muscadet and a mignonette. Quintessentially SF.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Angler",
-    cuisine: "Seafood",
-    price: "$$$",
-    neighborhood: "Embarcadero",
-    emoji: "🎣",
-    desc: "Joshua Skenes' hearth-driven seafood restaurant on the waterfront. Live-fire whole fish, shellfish towers, and one of the most dramatic dining rooms in the city.",
-    sources: ["eater"]
-  },
-  {
-    name: "SPQR",
-    cuisine: "Italian",
-    price: "$$$",
-    neighborhood: "Lower Pacific Heights",
-    emoji: "🫙",
-    desc: "Matthew Accarrino's Italian cooking is technically brilliant — house-made pastas, house-cured salumi, and a standout all-Italian wine program.",
-    sources: ["eater", "infatuation"]
-  },
-  {
-    name: "Bix",
-    cuisine: "American",
-    price: "$$$",
-    neighborhood: "Jackson Square",
-    emoji: "🎷",
-    desc: "A glamorous supper club hidden in an alley — live jazz, stiff cocktails, crab cakes, and Dungeness crab. SF's most atmospheric room.",
-    sources: ["infatuation"]
-  },
-  {
-    name: "Dumpling Time",
-    cuisine: "Chinese",
-    price: "$$",
-    neighborhood: "SoMa",
-    emoji: "🥟",
-    desc: "Upscale dim sum and xiaolongbao in a sleek, modern space. The soup dumplings are exceptional and the kitchen's technique rivals Hong Kong standards.",
-    sources: ["infatuation"]
-  },
-  {
-    name: "Yank Sing",
-    cuisine: "Chinese",
-    price: "$$",
-    neighborhood: "SoMa",
-    emoji: "🍤",
-    desc: "SF's gold standard for Cantonese dim sum since 1958. Over 100 items pushed from carts on weekends — har gow, shu mai, and crispy egg rolls.",
-    sources: ["eater", "infatuation"]
-  }
+  { name: "Zuni Café",              emoji: "🔥", cuisine: "California", price: "$$",   neighborhood: "Hayes Valley",        url: "https://zunicafe.com" },
+  { name: "State Bird Provisions",  emoji: "🐦", cuisine: "California", price: "$$",   neighborhood: "Lower Pac Heights",   url: "https://statebirdsf.com" },
+  { name: "Nopa",                   emoji: "🍕", cuisine: "American",   price: "$$",   neighborhood: "NoPa",                url: "https://nopasf.com" },
+  { name: "Rich Table",             emoji: "🌿", cuisine: "California", price: "$$$",  neighborhood: "Hayes Valley",        url: "https://richtablesf.com" },
+  { name: "Rintaro",                emoji: "🏮", cuisine: "Japanese",   price: "$$$",  neighborhood: "Mission",             url: "https://izakayarintaro.com" },
+  { name: "Flour + Water",          emoji: "🍝", cuisine: "Italian",    price: "$$$",  neighborhood: "Mission",             url: "https://flourandwater.com" },
+  { name: "La Ciccia",              emoji: "🐟", cuisine: "Italian",    price: "$$$",  neighborhood: "Noe Valley",          url: "https://laciccia.com" },
+  { name: "Liholiho Yacht Club",    emoji: "🌺", cuisine: "Hawaiian",   price: "$$$",  neighborhood: "Tendernob",           url: "https://liholihoyachtclub.com" },
+  { name: "Burma Superstar",        emoji: "🍜", cuisine: "Burmese",    price: "$",    neighborhood: "Inner Richmond",      url: "https://burmasuperstar.com" },
+  { name: "Tartine Manufactory",    emoji: "🥐", cuisine: "Bakery/Café",price: "$",    neighborhood: "Mission",             url: "https://tartinebakery.com" },
+  { name: "Saison",                 emoji: "✨", cuisine: "California", price: "$$$$", neighborhood: "SoMa",                url: "https://saisonsf.com" },
+  { name: "Quince",                 emoji: "🌸", cuisine: "Italian",    price: "$$$$", neighborhood: "Jackson Square",      url: "https://quincerestaurant.com" },
+  { name: "Gary Danko",             emoji: "⭐", cuisine: "American",   price: "$$$$", neighborhood: "Fisherman's Wharf",   url: "https://garydanko.com" },
+  { name: "Tony's Pizza Napoletana",emoji: "🍕", cuisine: "Italian",    price: "$$",   neighborhood: "North Beach",         url: "https://tonyspizzanapoletana.com" },
+  { name: "Al's Place",             emoji: "🥕", cuisine: "California", price: "$$$",  neighborhood: "Mission",             url: "https://alsplacesf.com" },
+  { name: "Birdsong",               emoji: "🌾", cuisine: "California", price: "$$$$", neighborhood: "SoMa",                url: "https://birdsongrestaurant.com" },
+  { name: "Nomica",                 emoji: "🍱", cuisine: "Japanese",   price: "$$",   neighborhood: "Tenderloin",          url: "https://nomicasf.com" },
+  { name: "El Farolito",            emoji: "🌯", cuisine: "Mexican",    price: "$",    neighborhood: "Mission",             url: "https://elfarolito.com" },
+  { name: "La Taqueria",            emoji: "🌮", cuisine: "Mexican",    price: "$",    neighborhood: "Mission",             url: "https://www.lataqueriasf.com" },
+  { name: "Hog Island Oyster Co.",  emoji: "🦪", cuisine: "Seafood",    price: "$$",   neighborhood: "Ferry Building",      url: "https://hogislandoysters.com" },
+  { name: "Angler",                 emoji: "🎣", cuisine: "Seafood",    price: "$$$",  neighborhood: "Embarcadero",         url: "https://anglerrestaurant.com" },
+  { name: "SPQR",                   emoji: "🫙", cuisine: "Italian",    price: "$$$",  neighborhood: "Lower Pac Heights",   url: "https://spqrsf.com" },
+  { name: "Bix",                    emoji: "🎷", cuisine: "American",   price: "$$$",  neighborhood: "Jackson Square",      url: "https://bixrestaurant.com" },
+  { name: "Dumpling Time",          emoji: "🥟", cuisine: "Chinese",    price: "$$",   neighborhood: "SoMa",                url: "https://dumplingtimesf.com" },
+  { name: "Yank Sing",              emoji: "🍤", cuisine: "Chinese",    price: "$$",   neighborhood: "SoMa",                url: "https://yanksing.com" },
 ];
 
-let activePrice = "all";
-let activeCuisine = "all";
+// Candy-land color palette cycling through each stop
+const COLORS = [
+  '#FF6B9D','#FFD93D','#6BCB77','#4D96FF',
+  '#FF9A3C','#C77DFF','#FF4757','#00C9B1',
+  '#FFB347','#87CEEB','#DDA0DD','#98FB98',
+  '#FF85A1','#FFC300','#56CFE1','#80FFDB',
+];
 
-function render() {
-  const filtered = restaurants.filter(r => {
-    const priceMatch = activePrice === "all" || r.price === activePrice;
-    const cuisineMatch = activeCuisine === "all" || r.cuisine === activeCuisine;
-    return priceMatch && cuisineMatch;
-  });
-
-  const grid = document.getElementById("grid");
-  const count = document.getElementById("count");
-  count.textContent = `${filtered.length} restaurant${filtered.length !== 1 ? "s" : ""}`;
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty"><h3>No matches</h3><p>Try adjusting your filters.</p></div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(r => `
-    <div class="card">
-      <div class="card-img">${r.emoji}</div>
-      <div class="card-body">
-        <div class="card-top">
-          <h2 class="card-name">${r.name}</h2>
-          <span class="card-price">${r.price}</span>
-        </div>
-        <div class="card-meta">
-          <span class="tag">${r.cuisine}</span>
-        </div>
-        <p class="card-desc">${r.desc}</p>
-        <div class="card-footer">
-          <span class="card-neighborhood">${r.neighborhood}</span>
-          <div class="card-sources">
-            ${r.sources.includes("eater") ? `<a class="source-tag eater" href="https://sf.eater.com" target="_blank" rel="noopener">Eater</a>` : ""}
-            ${r.sources.includes("infatuation") ? `<a class="source-tag infatuation" href="https://www.theinfatuation.com/san-francisco" target="_blank" rel="noopener">Infatuation</a>` : ""}
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join("");
+const PER_ROW = 3;
+const path = document.getElementById('path');
+const chunks = [];
+for (let i = 0; i < restaurants.length; i += PER_ROW) {
+  chunks.push(restaurants.slice(i, i + PER_ROW));
 }
 
-document.getElementById("price-pills").addEventListener("click", e => {
-  const pill = e.target.closest("[data-price]");
-  if (!pill) return;
-  activePrice = pill.dataset.price;
-  document.querySelectorAll("[data-price]").forEach(p => p.classList.toggle("active", p === pill));
-  render();
-});
+chunks.forEach((chunk, rowIdx) => {
+  // Row of stops
+  const row = document.createElement('div');
+  row.className = 'row' + (rowIdx % 2 === 1 ? ' reverse' : '');
 
-document.getElementById("cuisine-pills").addEventListener("click", e => {
-  const pill = e.target.closest("[data-cuisine]");
-  if (!pill) return;
-  activeCuisine = pill.dataset.cuisine;
-  document.querySelectorAll("[data-cuisine]").forEach(p => p.classList.toggle("active", p === pill));
-  render();
-});
+  chunk.forEach((r, i) => {
+    const n = rowIdx * PER_ROW + i;
+    const color = COLORS[n % COLORS.length];
 
-render();
+    const stop = document.createElement('div');
+    stop.className = 'stop';
+    stop.style.background = color;
+    stop.innerHTML = `
+      <div class="stop-num">STOP ${n + 1}</div>
+      <a href="${r.url}" target="_blank" rel="noopener">
+        <span class="stop-emoji">${r.emoji}</span>
+        <div class="stop-name">${r.name}</div>
+        <div class="stop-tags">
+          <span class="stop-tag">${r.cuisine}</span>
+          <span class="stop-tag">${r.price}</span>
+        </div>
+        <div class="stop-hood">📍 ${r.neighborhood}</div>
+        <span class="stop-cta">Visit Website →</span>
+      </a>`;
+    row.appendChild(stop);
+  });
+
+  path.appendChild(row);
+
+  // Connector turn between rows
+  if (rowIdx < chunks.length - 1) {
+    const nextColor = COLORS[((rowIdx + 1) * PER_ROW) % COLORS.length];
+    const isEven = rowIdx % 2 === 0;
+    const conn = document.createElement('div');
+    conn.className = 'connector ' + (isEven ? 'turn-right' : 'turn-left');
+    conn.style.setProperty('--c', nextColor);
+    conn.innerHTML = `<div class="connector-inner"></div>`;
+    path.appendChild(conn);
+  }
+});
 </script>
 </body>
 </html>
